@@ -1,0 +1,15 @@
+/Users/leroro/Projects/ConsoleVector/ConsoleAppVector/ConsoleAppVector/bin/Debug/net7.0/ConsoleAppVector
+/Users/leroro/Projects/ConsoleVector/ConsoleAppVector/ConsoleAppVector/bin/Debug/net7.0/ConsoleAppVector.deps.json
+/Users/leroro/Projects/ConsoleVector/ConsoleAppVector/ConsoleAppVector/bin/Debug/net7.0/ConsoleAppVector.runtimeconfig.json
+/Users/leroro/Projects/ConsoleVector/ConsoleAppVector/ConsoleAppVector/bin/Debug/net7.0/ConsoleAppVector.dll
+/Users/leroro/Projects/ConsoleVector/ConsoleAppVector/ConsoleAppVector/bin/Debug/net7.0/ConsoleAppVector.pdb
+/Users/leroro/Projects/ConsoleVector/ConsoleAppVector/ConsoleAppVector/obj/Debug/net7.0/ConsoleAppVector.csproj.AssemblyReference.cache
+/Users/leroro/Projects/ConsoleVector/ConsoleAppVector/ConsoleAppVector/obj/Debug/net7.0/ConsoleAppVector.GeneratedMSBuildEditorConfig.editorconfig
+/Users/leroro/Projects/ConsoleVector/ConsoleAppVector/ConsoleAppVector/obj/Debug/net7.0/ConsoleAppVector.AssemblyInfoInputs.cache
+/Users/leroro/Projects/ConsoleVector/ConsoleAppVector/ConsoleAppVector/obj/Debug/net7.0/ConsoleAppVector.AssemblyInfo.cs
+/Users/leroro/Projects/ConsoleVector/ConsoleAppVector/ConsoleAppVector/obj/Debug/net7.0/ConsoleAppVector.csproj.CoreCompileInputs.cache
+/Users/leroro/Projects/ConsoleVector/ConsoleAppVector/ConsoleAppVector/obj/Debug/net7.0/ConsoleAppVector.dll
+/Users/leroro/Projects/ConsoleVector/ConsoleAppVector/ConsoleAppVector/obj/Debug/net7.0/refint/ConsoleAppVector.dll
+/Users/leroro/Projects/ConsoleVector/ConsoleAppVector/ConsoleAppVector/obj/Debug/net7.0/ConsoleAppVector.pdb
+/Users/leroro/Projects/ConsoleVector/ConsoleAppVector/ConsoleAppVector/obj/Debug/net7.0/ConsoleAppVector.genruntimeconfig.cache
+/Users/leroro/Projects/ConsoleVector/ConsoleAppVector/ConsoleAppVector/obj/Debug/net7.0/ref/ConsoleAppVector.dll
