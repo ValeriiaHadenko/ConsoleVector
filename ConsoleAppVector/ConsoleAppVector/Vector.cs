@@ -31,7 +31,6 @@ public class Vector
     }
 
     public double GetLength() => Math.Sqrt(x * x + y * y);
-    public bool IsNormalize() => Length > 0;
 
     public void Reverse()
     {
@@ -46,7 +45,7 @@ public class Vector
     public void Normalize()
     {
         double len = Length;
-        if (IsNormalize())
+        if (len > 0)
         {
             x /= len;
             y /= len;
