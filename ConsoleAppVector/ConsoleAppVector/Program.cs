@@ -46,7 +46,6 @@ void PrintResultTask(Dictionary<string, int> dict)
 
 
 
-PrintResultTask(GetResultTask(100000));
-PrintResultTask(GetResultTask(200000));
-PrintResultTask(GetResultTask(200000));
-PrintResultTask(GetResultTask(000000));
+
+PrintResultTask(GetResultTask(600000));
+PrintResultTask(GetResultTask(900000));
