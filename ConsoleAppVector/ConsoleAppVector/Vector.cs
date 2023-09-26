@@ -31,27 +31,6 @@ public class Vector
     }
 
     public double GetLength() => Math.Sqrt(x * x + y * y);
-
-    public void Reverse()
-    {
-        x = -x;
-        y = -y;
-    }
-    public void Scale(double factor)
-    {
-        x *= factor;
-        y *= factor;
-    }
-    public void Normalize()
-    {
-        double len = Length;
-        if (len > 0)
-        {
-            x /= len;
-            y /= len;
-        }
-    }
-
     public static bool AreEqual(Vector v1, Vector v2) => v1.Equals(v2);
 
     public static Vector[] GenerateRandomVectors(int count)

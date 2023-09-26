@@ -17,8 +17,10 @@ Dictionary<string, int> GetResultTask(int vectorCount)
 
     for (int i = 0; i < vectorCount; i++)
     {
-        if (Vector.AreEqual(vectors1[i], vectors2[i])) countEquals++;
-        else countNotEquals++;
+        if (Vector.AreEqual(vectors1[i], vectors2[i]))
+            countEquals++;
+        else
+            countNotEquals++;
     }
 
     stopwatch.Stop();
@@ -44,7 +46,7 @@ void PrintResultTask(Dictionary<string, int> dict)
 
 
 
-PrintResultTask(GetResultTask(10000));
-PrintResultTask(GetResultTask(20000));
-PrintResultTask(GetResultTask(20000));
-PrintResultTask(GetResultTask(00000));
+PrintResultTask(GetResultTask(100000));
+PrintResultTask(GetResultTask(200000));
+PrintResultTask(GetResultTask(200000));
+PrintResultTask(GetResultTask(000000));
