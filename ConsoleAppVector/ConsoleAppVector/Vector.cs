@@ -51,7 +51,6 @@ public class Vector
         return (countEquals, countNotEquals);
     }
 
-
     public static Vector[] GenerateRandomVectors(int count)
     {
         Random random = new();
