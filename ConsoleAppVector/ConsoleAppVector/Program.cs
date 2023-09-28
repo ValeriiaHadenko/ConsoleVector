@@ -2,6 +2,19 @@
 using System.Threading;
 using ConsoleAppVector;
 
+
+
+int size = 40000000;
+
+Vector[] vectors1 = Vector.GenerateRandomVectors(size, min: 0, max: 5);
+Vector[] vectors2 = Vector.GenerateRandomVectors(size, min: 0, max: 5);
+
+PrintResultTask(GetResultTask(vectors1, vectors2));
+PrintResultTask(MultiThreadedGetResultTask(2, vectors1, vectors2));
+
+
+
+
 Dictionary<string, int> GetResultTask(Vector[] vectors1, Vector[] vectors2)
 {
     Stopwatch stopwatch = new();
@@ -27,11 +40,9 @@ Dictionary<string, int> MultiThreadedGetResultTask(int threadCount, Vector[] vec
     int countNotEquals = 0;
     int vectorCount = vectors1.Length == vectors2.Length ? vectors1.Length : 0;
 
-    Stopwatch stopwatch = new();
 
     Thread[] threads = new Thread[threadCount];
-
-    object locker = new();
+    Stopwatch stopwatch = new();
 
 
     stopwatch.Start();
@@ -41,18 +52,23 @@ Dictionary<string, int> MultiThreadedGetResultTask(int threadCount, Vector[] vec
         int start = i * vectorCount / threadCount;
         int end = ((1 + i) * vectorCount / threadCount) - 1;
 
+
         threads[i] = new Thread(() =>
         {
+            int localCountEquals = 0;
+            int localCountNotEquals = 0;
+
             for (int j = start; j <= end; j++)
             {
-                lock (locker)
-                {
-                    if (Vector.AreEqual(vectors1[j], vectors2[j]))
-                        countEquals++;
-                    else
-                        countNotEquals++;
-                }
+                if (Vector.AreEqual(vectors1[j], vectors2[j]))
+                    localCountEquals++;
+                else
+                    localCountNotEquals++;
+                
             }
+
+            countEquals += localCountEquals;
+            countNotEquals += localCountNotEquals;
 
         });
 
@@ -60,10 +76,9 @@ Dictionary<string, int> MultiThreadedGetResultTask(int threadCount, Vector[] vec
 
     }
 
-
     foreach (Thread thread in threads) thread.Join();
 
-
+    
     stopwatch.Stop();
 
     return new()
@@ -76,7 +91,6 @@ Dictionary<string, int> MultiThreadedGetResultTask(int threadCount, Vector[] vec
 }
 
 
-
 void PrintResultTask(Dictionary<string, int> dict, string name = "Task result:")
 {
     Console.WriteLine(
@@ -87,12 +101,3 @@ void PrintResultTask(Dictionary<string, int> dict, string name = "Task result:")
         $"\nNumber of not equal vectors: {dict["countNotEquals"]}"
         );
 }
-
-
-int size = 60000000;
-
-Vector[] vectors1 = Vector.GenerateRandomVectors(size, min: 0, max: 5);
-Vector[] vectors2 = Vector.GenerateRandomVectors(size, min: 0, max: 5);
-
-PrintResultTask(GetResultTask(vectors1, vectors2));
-PrintResultTask(MultiThreadedGetResultTask(8, vectors1, vectors2));
