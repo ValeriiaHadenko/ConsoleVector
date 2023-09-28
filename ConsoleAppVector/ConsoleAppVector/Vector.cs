@@ -31,7 +31,26 @@ public class Vector
     }
 
     public double GetLength() => Math.Sqrt(x * x + y * y);
+
     public static bool AreEqual(Vector v1, Vector v2) => v1.Equals(v2);
+    public static (int, int) AreEqual(Vector[] v1, Vector[] v2)
+    {
+        int vectorCount = v1.Length == v2.Length ? v1.Length : 0;
+
+        int countEquals = 0;
+        int countNotEquals = 0;
+
+        for (int i = 0; i < vectorCount; i++)
+        {
+            if (v1[i].Equals(v2[i]))
+                countEquals++;
+            else
+                countNotEquals++;
+        }
+
+        return (countEquals, countNotEquals);
+    }
+
 
     public static Vector[] GenerateRandomVectors(int count)
     {

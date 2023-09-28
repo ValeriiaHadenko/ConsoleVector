@@ -2,90 +2,63 @@
 using System.Threading;
 using ConsoleAppVector;
 
-Dictionary<string, int> GetResultTask(int vectorCount)
+Dictionary<string, int> GetResultTask(Vector[] vectors1, Vector[] vectors2)
 {
-    int countEquals = 0;
-    int countNotEquals = 0;
-
     Stopwatch stopwatch = new();
-
-    Dictionary<string, int> task = new();
-
-    Vector[] vectors1 = Vector.GenerateRandomVectors(vectorCount, min: 0, max: 5);
-    Vector[] vectors2 = Vector.GenerateRandomVectors(vectorCount, min: 0, max: 5);
 
     stopwatch.Start();
 
-    for (int i = 0; i < vectorCount; i++)
-    {
-        if (Vector.AreEqual(vectors1[i], vectors2[i]))
-            countEquals++;
-        else
-            countNotEquals++;
-    }
+    (int, int) result = Vector.AreEqual(vectors1, vectors2);
 
     stopwatch.Stop();
 
-    task.Add("time", (int) stopwatch.ElapsedMilliseconds);
-    task.Add("vectorCount", vectorCount);
-    task.Add("countEquals", countEquals);
-    task.Add("countNotEquals", countNotEquals);
-
-    return task;
+    return new()
+    {
+        { "time", (int) stopwatch.ElapsedMilliseconds },
+        { "vectorCount", result.Item1 + result.Item2},
+        { "countEquals",  result.Item1},
+        { "countNotEquals", result.Item2}
+    };
 }
 
-Dictionary<string, int> MultiThreadedGetResultTask(int vectorCount)
+Dictionary<string, int> MultiThreadedGetResultTask(int threadCount, Vector[] vectors1, Vector[] vectors2)
 {
-    int threadCount = Environment.ProcessorCount;
-
-    int countEquals = 0;
-    int countNotEquals = 0;
+    int totalCountEquals = 0;
+    int totalCountNotEquals = 0;
+    int vectorCount = vectors1.Length == vectors2.Length ? vectors1.Length : 0;
 
     Stopwatch stopwatch = new();
 
-    Dictionary<string, int> task = new();
+    //for (int i = 0; i < vectorCount; i++)
+    //{
+    //    Console.WriteLine($"vector 1 [{i}] {vectors1[i]} -  vector 2 [{i}] {vectors2[i]}");
+    //}
 
-    Vector[] vectors1 = Vector.GenerateRandomVectors(vectorCount, min: 0, max: 5);
-    Vector[] vectors2 = Vector.GenerateRandomVectors(vectorCount, min: 0, max: 5);
 
-
-    object locker = new();
     stopwatch.Start();
 
     for (int i = 0; i < threadCount; i++)
     {
-        Thread myThread = new(() =>
-        {
-            lock (locker)
-            {
-                countEquals = 0;
-                countNotEquals = 0;
+        int start = i * vectorCount / threadCount;
+        int end = ((1 + i) * vectorCount / threadCount) - 1;
 
-                for (int i = 0; i < vectorCount; i++)
-                {
-                    if (Vector.AreEqual(vectors1[i], vectors2[i]))
-                        countEquals++;
-                    else
-                        countNotEquals++;
+        Console.WriteLine(
+            $"vector 1 [{start}] {vectors1[start]}, [{end}] {vectors1[end]} - " +
+            $"vector 2 [{start}] {vectors2[start]}, [{end}] {vectors2[end]}");
 
-                }
-            }
-        });
-        myThread.Start();
     }
-
-
 
     stopwatch.Stop();
 
 
 
-    task.Add("time", (int)stopwatch.ElapsedMilliseconds);
-    task.Add("vectorCount", vectorCount);
-    task.Add("countEquals", countEquals);
-    task.Add("countNotEquals", countNotEquals);
-
-    return task;
+    return new()
+    {
+        { "time", (int) stopwatch.ElapsedMilliseconds },
+        { "vectorCount", totalCountEquals + totalCountNotEquals},
+        { "countEquals",  totalCountEquals},
+        { "countNotEquals", totalCountNotEquals}
+    };
 }
 
 
@@ -97,15 +70,16 @@ void PrintResultTask(Dictionary<string, int> dict, string name = "Task result:")
         $"\nTime: {dict["time"]} ms " +
         $"\nNumber of vector elements: {dict["vectorCount"]}" +
         $"\nNumber of equal vectors: {dict["countEquals"]}" +
-        $"\nNumber of not equal vectors: {dict["countNotEquals"]}\n"
+        $"\nNumber of not equal vectors: {dict["countNotEquals"]}"
         );
 }
 
 
 
 
-//PrintResultTask(GetResultTask(1000000));
-//PrintResultTask(GetResultTask(2000000));
+Vector[] vectors1 = Vector.GenerateRandomVectors(500, min: 0, max: 5);
+Vector[] vectors2 = Vector.GenerateRandomVectors(500, min: 0, max: 5);
 
-//PrintResultTask(MultiThreadedGetResultTask(1000000));
-PrintResultTask(MultiThreadedGetResultTask(20000));
+PrintResultTask(GetResultTask(vectors1, vectors2));
+
+PrintResultTask(MultiThreadedGetResultTask(8, vectors1, vectors2));
