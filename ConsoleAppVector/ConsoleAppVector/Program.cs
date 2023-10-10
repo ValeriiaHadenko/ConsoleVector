@@ -3,15 +3,32 @@ using System.Threading;
 using ConsoleAppVector;
 
 
+int[] vectCount = { 1000000, 2000000, 5000000, 10000000, 20000000 };
+int[] threadCount = { 2, 4, 8, 16 };
 
-int size = 40000000;
+for (int i = 0; i < vectCount.Length; i++)
+{
+    Vector[] vectors1 = Vector.GenerateRandomVectors(vectCount[i], 0, 5);
+    Vector[] vectors2 = Vector.GenerateRandomVectors(vectCount[i], 0, 5);
 
-Vector[] vectors1 = Vector.GenerateRandomVectors(size, min: 0, max: 5);
-Vector[] vectors2 = Vector.GenerateRandomVectors(size, min: 0, max: 5);
+    Dictionary<string, int> singleThreadedResult = GetResultTask(vectors1, vectors2);
+    int singleThreadedTime = singleThreadedResult["time"];
 
-PrintResultTask(GetResultTask(vectors1, vectors2));
-PrintResultTask(MultiThreadedGetResultTask(2, vectors1, vectors2));
+    PrintTaskInfoResult(singleThreadedResult, $"Experiment {i+1} Thread 1, Size {vectCount[i]}");
 
+    for (int j = 0; j < threadCount.Length; j++)
+    {
+        Dictionary<string, int> multiThreadedResult = MultiThreadedGetResultTask(threadCount[j], vectors1, vectors2);
+        int multiThreadedTime = multiThreadedResult["time"];
+        double speedup = (double)singleThreadedTime / multiThreadedTime;
+        PrintTaskInfoResult(multiThreadedResult, $"Experiment {i + 1} Thread {threadCount[j]}, Size {vectCount[i]}");
+
+        double roundedSpeedup = Math.Round(speedup, 2);
+        Console.WriteLine($"Speedup for experiment {i + 1}, {threadCount[j]} threads: {roundedSpeedup}\n");
+    }
+
+    Console.WriteLine();
+}
 
 
 
@@ -52,7 +69,6 @@ Dictionary<string, int> MultiThreadedGetResultTask(int threadCount, Vector[] vec
         int start = i * vectorCount / threadCount;
         int end = ((1 + i) * vectorCount / threadCount) - 1;
 
-
         threads[i] = new Thread(() =>
         {
             int localCountEquals = 0;
@@ -64,12 +80,10 @@ Dictionary<string, int> MultiThreadedGetResultTask(int threadCount, Vector[] vec
                     localCountEquals++;
                 else
                     localCountNotEquals++;
-                
             }
 
             countEquals += localCountEquals;
             countNotEquals += localCountNotEquals;
-
         });
 
         threads[i].Start();
@@ -90,14 +104,13 @@ Dictionary<string, int> MultiThreadedGetResultTask(int threadCount, Vector[] vec
     };
 }
 
-
-void PrintResultTask(Dictionary<string, int> dict, string name = "Task result:")
+void PrintTaskInfoResult(Dictionary<string, int> dict, string name = "Task result:")
 {
     Console.WriteLine(
         $"{name}" +
-        $"\nTime: {dict["time"]} ms " +
+        $"\nTime: {dict["time"]} ms" + 
         $"\nNumber of vector elements: {dict["vectorCount"]}" +
         $"\nNumber of equal vectors: {dict["countEquals"]}" +
-        $"\nNumber of not equal vectors: {dict["countNotEquals"]}"
+        $"\nNumber of not equal vectors: {dict["countNotEquals"]}\n"
         );
 }
